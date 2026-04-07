@@ -48,8 +48,8 @@ if risk:
         st.success(f"✅ {advice}")
     st.markdown("---")
 
-api_key = st.secrets.get("GROQ_API_KEY", "")st.markdown("---")
-
+api_key = st.secrets.get("GROQ_API_KEY", "")
+st.markdown("---")
 col1, col2, col3 = st.columns(3)
 col1.markdown("### 📸 Step 1\nUpload leaf photo")
 col2.markdown("### 🔬 Step 2\nAI detects disease")
