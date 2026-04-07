@@ -48,8 +48,7 @@ if risk:
         st.success(f"✅ {advice}")
     st.markdown("---")
 
-api_key = st.text_input("🔑 Enter your Groq API Key", type="password", placeholder="gsk_...")
-st.markdown("---")
+api_key = st.secrets.get("GROQ_API_KEY", "")st.markdown("---")
 
 col1, col2, col3 = st.columns(3)
 col1.markdown("### 📸 Step 1\nUpload leaf photo")
@@ -68,9 +67,7 @@ if uploaded and api_key:
     img_b64 = base64.b64encode(buf.getvalue()).decode()
 
    with st.spinner("🔬 AI analyzing leaf..."):
-        client = Groq(api_key=api_key)
-        response = client.chat.completions.create(
-            model="meta-llama/llama-4-scout-17b-16e-instruct",
+                   model="meta-llama/llama-4-scout-17b-16e-instruct",
             messages=[{
                 "role": "user",
                 "content": [
