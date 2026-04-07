@@ -126,8 +126,10 @@ if uploaded and api_key:
 
         st.info(f"🧪 **How to Apply:** {how}")
         st.info(f"⏰ **When to Spray:** {when}")
-        st.warning(f"🛡️ **Prevention:** {prevent}")
-
+       if prevent:
+            st.warning(f"🛡️ **Prevention:** {prevent}")
+        else:
+            st.warning("🛡️ **Prevention:** Use disease-free seeds. Avoid overhead irrigation. Remove infected leaves immediately.")
     st.markdown("---")
     st.markdown("## 🌍 5 Language Voice + Text")
 
