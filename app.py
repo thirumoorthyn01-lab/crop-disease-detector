@@ -67,7 +67,7 @@ if uploaded and api_key:
     img.save(buf, format="JPEG")
     img_b64 = base64.b64encode(buf.getvalue()).decode()
 
-    with st.spinner("🔬 AI analyzing leaf..."):
+   with st.spinner("🔬 AI analyzing leaf..."):
         client = Groq(api_key=api_key)
         response = client.chat.completions.create(
             model="meta-llama/llama-4-scout-17b-16e-instruct",
