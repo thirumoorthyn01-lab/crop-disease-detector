@@ -46,10 +46,11 @@ if risk:
         st.warning(f"⚠️ {advice}")
     else:
         st.success(f"✅ {advice}")
-    st.markdown("---")
 
+st.markdown("---")
 api_key = st.secrets.get("GROQ_API_KEY", "")
 st.markdown("---")
+
 col1, col2, col3 = st.columns(3)
 col1.markdown("### 📸 Step 1\nUpload leaf photo")
 col2.markdown("### 🔬 Step 2\nAI detects disease")
@@ -66,8 +67,10 @@ if uploaded and api_key:
     img.save(buf, format="JPEG")
     img_b64 = base64.b64encode(buf.getvalue()).decode()
 
-   with st.spinner("🔬 AI analyzing leaf..."):
-                   model="meta-llama/llama-4-scout-17b-16e-instruct",
+    with st.spinner("🔬 AI analyzing leaf..."):
+        client = Groq(api_key=api_key)
+        response = client.chat.completions.create(
+            model="meta-llama/llama-4-scout-17b-16e-instruct",
             messages=[{
                 "role": "user",
                 "content": [
@@ -156,7 +159,7 @@ if uploaded and api_key:
     st.caption("For guidance only. Verify with your local Krishi Vigyan Kendra (KVK).")
 
 elif uploaded and not api_key:
-    st.warning("Please enter your Groq API key above.")
+    st.warning("⚠️ Groq API key not found. Please add it in Streamlit Secrets.")
 else:
     st.markdown("""
     <div style='text-align:center;padding:40px;background:#f0fdf4;
