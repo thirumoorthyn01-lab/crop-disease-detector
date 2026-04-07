@@ -62,7 +62,6 @@ uploaded = st.file_uploader("📸 Upload a leaf photo", type=["jpg","jpeg","png"
 if uploaded and api_key:
     img = Image.open(uploaded).convert("RGB")
     st.image(img, caption="📸 Uploaded Leaf", use_container_width=True)
-
     buf = io.BytesIO()
     img.save(buf, format="JPEG")
     img_b64 = base64.b64encode(buf.getvalue()).decode()
@@ -75,7 +74,7 @@ if uploaded and api_key:
                 "role": "user",
                 "content": [
                     {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{img_b64}"}},
-                    {"type": "text", "text": "You are an expert plant pathologist helping Indian farmers. Analyze this leaf image carefully. Respond in EXACTLY this format, ALL fields required:\nCROP: [crop name]\nDISEASE: [disease name or Healthy]\nSEVERITY: [Mild/Moderate/Severe/None]\nCAUSE: [one sentence]\nMEDICINE_1: [medicine and dosage]\nMEDICINE_2: [alternative or None]\nHOW_TO_APPLY: [steps]\nWHEN_TO_SPRAY: [timing]\nPREVENTION: [2 tips]\nENGLISH: [2 sentence summary in English]\nTAMIL: [2 sentence summary in Tamil]\nHINDI: [2 sentence summary in Hindi]\nTELUGU: [2 sentence summary in Telugu]\nKANNADA: [2 sentence summary in Kannada]\n\nFill every field. No skipping."}
+                    {"type": "text", "text": "You are an expert plant pathologist helping Indian farmers. Analyze this leaf image carefully. Respond in EXACTLY this format, ALL fields required:\nCROP: [crop name]\nDISEASE: [disease name or Healthy]\nSEVERITY: [Mild/Moderate/Severe/None]\nCAUSE: [one sentence]\nMEDICINE_1: [medicine and dosage]\nMEDICINE_2: [alternative or None]\nHOW_TO_APPLY: [steps]\nWHEN_TO_SPRAY: [timing]\nPREVENTION: [2 tips separated by comma]\nENGLISH: [2 sentence summary in English]\nTAMIL: [2 sentence summary in Tamil]\nHINDI: [2 sentence summary in Hindi]\nTELUGU: [2 sentence summary in Telugu]\nKANNADA: [2 sentence summary in Kannada]\n\nFill every field. No skipping."}
                 ]
             }],
             max_tokens=1500
@@ -96,7 +95,7 @@ if uploaded and api_key:
     med2     = data.get("MEDICINE_2", "")
     how      = data.get("HOW_TO_APPLY", "")
     when     = data.get("WHEN_TO_SPRAY", "")
-    prevent  = data.get("PREVENTION", "")
+    prevent  = data.get("PREVENTION", "Use disease-free seeds. Remove infected leaves immediately.")
     lang_en  = data.get("ENGLISH", "")
     lang_ta  = data.get("TAMIL", "")
     lang_hi  = data.get("HINDI", "")
@@ -114,7 +113,6 @@ if uploaded and api_key:
         c1, c2 = st.columns(2)
         c1.error(f"**🌾 Crop:** {crop}\n\n**🦠 Disease:** {disease}")
         c2.warning(f"**{sev_icon} Severity:** {severity}\n\n**📌 Cause:** {cause}")
-
         st.markdown("---")
         st.markdown("## 💊 Step 3 — Medicine & Treatment")
         m1, m2 = st.columns(2)
@@ -123,13 +121,10 @@ if uploaded and api_key:
             m2.success(f"**💊 Medicine 2:**\n\n{med2}")
         else:
             m2.info("No alternative needed")
-
         st.info(f"🧪 **How to Apply:** {how}")
         st.info(f"⏰ **When to Spray:** {when}")
-       if prevent:
-            st.warning(f"🛡️ **Prevention:** {prevent}")
-        else:
-            st.warning("🛡️ **Prevention:** Use disease-free seeds. Avoid overhead irrigation. Remove infected leaves immediately.")
+        st.warning(f"🛡️ **Prevention:** {prevent}")
+
     st.markdown("---")
     st.markdown("## 🌍 5 Language Voice + Text")
 
